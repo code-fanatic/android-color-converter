@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HEX ↔ Android Color Converter</title>
+
+<style>
+:root {
+  --bg: #0f1115;
+  --card: #1b1f27;
+  --text: #e8eaf0;
+  --muted: #9aa3b2;
+  --accent: #4da3ff;
+  --border: #2a2f3a;
+  --error: #ff5c5c;}
+
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  padding: 16px;}
+
+.container {
+  width: 100%;
+  max-width: 420px;}
+
+h1 {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    text-align: center;}
+
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  margin-bottom: 16px;}
+
+label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+  display: block;}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #12151c;
+  color: var(--text);
+  font-size: 1rem;}
+
+input.invalid {
+  border-color: var(--error);}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent);}
+
+button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: #000;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;}
+
+
+.primary {
+  background: #2a2f3a;
+  color: var(--text);}
+
+.color-preview {
+  height: 48px;
+  border-radius: 10px;
+  margin-top: 12px;
+  border: 1px solid var(--border);}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;}
+
+.toast.show {
+  opacity: 1;}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;}
+
+.github-link svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;}
+
+.github-link:hover {
+  text-decoration: underline;}
+
+
+.footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 12px;
+  padding-bottom: 8px;}
+
+.footer span {
+  color: var(--accent);
+  font-weight: 600;}
+
+
+</style>
+</head>
+
+<body>
+<div class="container">
+<h1>Android Color Converter</h1>
+  <!-- HEX TO ANDROID -->
+  <div class="card">
+    <label>HEX Color (fff, #fff, RRGGBB, AARRGGBB)</label>
+    <input id="hexInput" placeholder="fff / 6200ee / FF6200EE" />
+
+    <button onclick="copyText(hexRaw)">Copy HEX</button>
+    <button class="primary" onclick="copyText(androidDecimal)">Copy Android Int</button>
+
+    <div class="color-preview" id="preview1"></div>
+  </div>
+
+  <!-- ANDROID TO HEX -->
+  <div class="card">
+    <label>Android Color Integer (decimal)</label>
+    <input id="androidInput" placeholder="-16776961" />
+
+    <button onclick="copyText(hexRaw)">Copy HEX</button>
+    <button class="primary" onclick="copyText(androidDecimal)">Copy Android Int</button>
+
+    <div class="color-preview" id="preview2"></div>
+  </div>
+
+<footer class="footer">
+  <a href="https://github.com/cool-dev-code" target="_blank" class="github-link">
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+      0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+      -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87
+      2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+      0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21
+      2.2.82a7.65 7.65 0 012-.27c.68 0 1.36.09 2 .27
+      1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+      0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48
+      0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8
+      c0-4.42-3.58-8-8-8z"/>
+    </svg>
+    <span>cool-dev-code</span>
+  </a>
+
+  <div class="footer-text">
+    Made by Developer for Developers with ❤️
+  </div>
+</footer>
+
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+let androidDecimal = "";
+let hexRaw = "";
+
+const hexInput = document.getElementById("hexInput");
+const androidInput = document.getElementById("androidInput");
+
+hexInput.addEventListener("input", updateFromHex);
+androidInput.addEventListener("input", updateFromAndroid);
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 1800);
+}
+
+function normalizeHex(input) {
+  if (!input) return null;
+  input = input.trim().replace("#", "").toUpperCase();
+  if (!/^[0-9A-F]+$/.test(input)) return null;
+
+  if (input.length === 3)
+    input = "FF" + input.split("").map(c => c + c).join("");
+  else if (input.length === 4)
+    input = input.split("").map(c => c + c).join("");
+  else if (input.length === 6)
+    input = "FF" + input;
+
+  return input.length === 8 ? input : null;
+}
+
+function updateFromHex() {
+  hexInput.classList.remove("invalid");
+  androidDecimal = "";
+  hexRaw = "";
+
+  const hex = normalizeHex(hexInput.value);
+  if (!hex) {
+    hexInput.classList.add("invalid");
+    document.getElementById("preview1").style.background = "transparent";
+    return;
+  }
+
+  hexRaw = hex;
+  let intVal = parseInt(hex, 16);
+  if (intVal > 0x7FFFFFFF) intVal -= 0x100000000;
+  androidDecimal = intVal.toString();
+
+  document.getElementById("preview1").style.background =
+    "#" + hex.substring(2);
+}
+
+function updateFromAndroid() {
+  androidInput.classList.remove("invalid");
+  androidDecimal = "";
+  hexRaw = "";
+
+  const val = androidInput.value.trim();
+  if (!/^-?\d+$/.test(val)) {
+    androidInput.classList.add("invalid");
+    return;
+  }
+
+  let intVal = parseInt(val, 10);
+  if (intVal < -2147483648 || intVal > 2147483647) {
+    androidInput.classList.add("invalid");
+    showToast("Invalid Android color value");
+    return;
+  }
+
+  androidDecimal = intVal.toString();
+  if (intVal < 0) intVal += 0x100000000;
+
+  hexRaw = intVal.toString(16).padStart(8, "0").toUpperCase();
+  document.getElementById("preview2").style.background =
+    "#" + hexRaw.substring(2);
+}
+
+function copyText(text) {
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast("Copied to clipboard");
+  });
+}
+</script>
+
+</body>
+</html>
